@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
@@ -6,4 +7,5 @@ namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+
 }
