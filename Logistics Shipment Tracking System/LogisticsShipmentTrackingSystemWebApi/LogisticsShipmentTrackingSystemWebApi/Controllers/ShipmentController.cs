@@ -6,4 +6,5 @@ namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
 [ApiController]
 public class ShipmentController : ControllerBase
 {
+
 }
