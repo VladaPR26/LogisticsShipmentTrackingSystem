@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LogisticsShipmentTrackingSystemWebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4fbcff19f6674fb130c07f6be58b19da2b8980b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bc708bf1541cb215a2b4fbc8d02213b659b73e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("LogisticsShipmentTrackingSystemWebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LogisticsShipmentTrackingSystemWebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
