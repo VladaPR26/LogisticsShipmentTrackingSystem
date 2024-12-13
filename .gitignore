@@ -93,3 +93,4 @@ node_modules/
 # Datoteke za sertifikate
 *.pfx
 *.p12
+/Logistics Shipment Tracking System/LogisticsShipmentTrackingSystemWebApi/LogisticsShipmentTrackingSystemWebApi/obj/Debug/net8.0/ref/LogisticsShipmentTrackingSystemWebApi.dll
