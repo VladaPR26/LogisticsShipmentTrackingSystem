@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
+﻿using Application.Contracts;
+using Application.Services.Users.Requests;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
@@ -7,5 +8,15 @@ namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-
+    private readonly IUserService _userService;
+    public UserController(IUserService userService)
+    {
+        _userService = userService;
+    }
+    [HttpPost("login")]
+    public ActionResult Login(LoginRequest request)
+    {
+        var response = _userService.Login(request);
+        return Ok(response);
+    }
 }

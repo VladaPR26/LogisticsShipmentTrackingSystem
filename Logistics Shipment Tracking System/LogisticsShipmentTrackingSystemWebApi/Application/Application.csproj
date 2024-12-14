@@ -7,14 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Shipment\Responses\" />
-    <Folder Include="Services\Shipment\Requests\" />
-    <Folder Include="Services\User\Responses\" />
-    <Folder Include="Services\User\Requests\" />
+    <ProjectReference Include="..\DataBase\DataBase.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataBase\DataBase.csproj" />
+    <Folder Include="Services\Shipments\Responses\" />
+    <Folder Include="Services\Shipments\Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

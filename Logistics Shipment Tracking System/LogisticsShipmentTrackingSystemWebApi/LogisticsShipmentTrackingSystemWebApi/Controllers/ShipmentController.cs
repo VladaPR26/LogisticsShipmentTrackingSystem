@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Contracts;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
@@ -6,5 +8,10 @@ namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
 [ApiController]
 public class ShipmentController : ControllerBase
 {
+    private readonly IShipmentService _shipmentService;
+    public ShipmentController(IShipmentService shipmentService)
+    {
+        _shipmentService = shipmentService;
+    }
 
 }

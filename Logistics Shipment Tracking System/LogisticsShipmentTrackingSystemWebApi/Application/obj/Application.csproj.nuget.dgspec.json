@@ -32,6 +32,9 @@
             "projectReferences": {
               "C:\\Users\\Dejan\\Desktop\\Logistic\\Logistics Shipment Tracking System\\LogisticsShipmentTrackingSystemWebApi\\DataBase\\DataBase.csproj": {
                 "projectPath": "C:\\Users\\Dejan\\Desktop\\Logistic\\Logistics Shipment Tracking System\\LogisticsShipmentTrackingSystemWebApi\\DataBase\\DataBase.csproj"
+              },
+              "C:\\Users\\Dejan\\Desktop\\Logistic\\Logistics Shipment Tracking System\\LogisticsShipmentTrackingSystemWebApi\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Dejan\\Desktop\\Logistic\\Logistics Shipment Tracking System\\LogisticsShipmentTrackingSystemWebApi\\Domain\\Domain.csproj"
               }
             }
           }
@@ -45,6 +48,16 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -106,6 +119,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

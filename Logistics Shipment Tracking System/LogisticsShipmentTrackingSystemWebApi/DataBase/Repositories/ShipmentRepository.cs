@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using DataBase.Repositories.Contracts;
+
 namespace DataBase.Repositories;
-internal class ShipmentRepository
+public class ShipmentRepository:IShipmentRepository
 {
 }
