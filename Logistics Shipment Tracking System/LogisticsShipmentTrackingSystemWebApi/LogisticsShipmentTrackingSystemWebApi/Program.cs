@@ -1,4 +1,4 @@
-using Application.Contracts;
+﻿using Application.Contracts;
 using Application.Services.Users;
 using DataBase.Repositories.Contracts;
 using DataBase.Repositories;
@@ -8,8 +8,17 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Application.Services.Shipments;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console() // Logovi će se prikazivati u konzol
+    .Enrich.FromLogContext() // Dodaje dodatne informacije u log (kao što je putanja zahteva)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -89,5 +98,7 @@ app.UseCors(config =>
     config.AllowAnyMethod();
     config.AllowAnyOrigin();
 });
+
+app.UseSerilogRequestLogging();
 
 app.Run();
