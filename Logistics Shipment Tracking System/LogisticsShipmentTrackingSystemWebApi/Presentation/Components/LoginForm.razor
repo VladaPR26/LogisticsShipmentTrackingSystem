@@ -1,0 +1,85 @@
+﻿@using Presentation.Services
+@using System.ComponentModel.DataAnnotations
+
+<div>
+    <EditForm Model="@loginModel"  OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator/>    <!--Dodavanje validacije na osnovu [Required atributa] -->
+        <div>
+            <label for="username">Username</label>
+            <InputText id="username" @bind-Value="loginModel.Username"/> <!--Input polje koje se binduje na login model objekat-->
+            <ValidationMessage For="@(() => loginModel.Username)" />
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <InputText id="password" type="password" @bind-Value="loginModel.Password" />
+            <ValidationMessage For="@(() => loginModel.Password)" />
+        </div>
+
+        <button type="submit" disabled="@isLoading">
+            @if (isLoading)
+            {
+                <span>Loading...</span>
+            }
+            else
+            {
+                <span>Login</span>
+            }
+        </button>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger mt-2">
+                @errorMessage
+            </div>
+        }
+    </EditForm>
+</div>
+
+@code {
+
+    private LoginModel loginModel = new LoginModel();
+    private bool isLoading = false;
+    private string errorMessage;
+
+    [Inject]
+    private UserService UserService { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        errorMessage = string.Empty;
+        try
+        {
+            var result = await UserService.LoginAsync(loginModel.Username, loginModel.Password);
+
+            if (result)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Invalid username or password.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred during login. Please try again.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Username is required.")]
+        public string Username { get; set; } = String.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        public string Password { get; set; } = String.Empty;
+    }
+}
