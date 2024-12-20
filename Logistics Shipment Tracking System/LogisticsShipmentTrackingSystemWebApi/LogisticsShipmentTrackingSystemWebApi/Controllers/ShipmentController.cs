@@ -4,6 +4,8 @@ using Application.Services.Shipments.Responses;
 
 using Domain.Models.Entities;
 
+using FluentValidation;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +16,11 @@ namespace LogisticsShipmentTrackingSystemWebApi.Controllers;
 public class ShipmentController : ControllerBase
 {
     private readonly IShipmentService _shipmentService;
-    public ShipmentController(IShipmentService shipmentService)
+    private readonly IValidator<ShipmentRequest> _shipmentRequestValidator;
+    public ShipmentController(IShipmentService shipmentService,IValidator<ShipmentRequest> shipmentRequestValidator)
     {
         _shipmentService = shipmentService;
+        _shipmentRequestValidator = shipmentRequestValidator;
     }
 
     [HttpGet]
@@ -37,7 +41,7 @@ public class ShipmentController : ControllerBase
     [Authorize]
     public ActionResult CreateShipment(ShipmentRequest request)
     {
-        //validacija
+        var validationResult = _shipmentRequestValidator.Validate(request);
         Shipment shipment = _shipmentService.CreateShipment(request);
         return CreatedAtAction(nameof(CreateShipment), shipment);
     }
@@ -46,7 +50,7 @@ public class ShipmentController : ControllerBase
     [Authorize]
     public ActionResult UpdateShipment(ShipmentRequest request)
     {
-        //validacija
+        var validationResult = _shipmentRequestValidator.Validate(request);
         _shipmentService.UpdateShipment(request);
         return NoContent();
     }

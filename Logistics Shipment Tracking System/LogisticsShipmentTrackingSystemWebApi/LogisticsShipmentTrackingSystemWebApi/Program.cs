@@ -9,6 +9,10 @@ using System.Text;
 using System.Security.Claims;
 using Application.Services.Shipments;
 using Serilog;
+using FluentValidation;
+using LogisticsShipmentTrackingSystemWebApi.Validators;
+using Application.Services.Shipments.Requests;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +49,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
+
+
+builder.Services.AddScoped<IValidator<ShipmentRequest>, ShipmentRequestValidator>();
+
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShipmentRequestValidator>());
 
 builder.Services.AddControllers();
 

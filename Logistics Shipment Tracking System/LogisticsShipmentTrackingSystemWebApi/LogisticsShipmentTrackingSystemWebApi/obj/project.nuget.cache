@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "W2gWdZ6a6ChThik2npC8rIsZSvyZX0SIqOq78ROsqztgxs1Zwt6HSpWzDJffeAdJcu85qNKX8Lq05Tqnm+ojow==",
+  "dgSpecHash": "lhQaLOoFFHvolLjk3CunXQJuGkwutCz6dOmmp1lnQK7t9ebKRLMMfObLkNDZydL4wW31A6oPE4kS5ifXesJJpw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Dejan\\Desktop\\Logistic\\Logistics Shipment Tracking System\\LogisticsShipmentTrackingSystemWebApi\\LogisticsShipmentTrackingSystemWebApi\\LogisticsShipmentTrackingSystemWebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dejan\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
+    "C:\\Users\\Dejan\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\Dejan\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\Dejan\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\Dejan\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.7\\microsoft.aspnetcore.authentication.jwtbearer.8.0.7.nupkg.sha512",
     "C:\\Users\\Dejan\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\Dejan\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0\\microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",
