@@ -1,7 +1,42 @@
 ﻿@page "/"
 @using Presentation.Components
-<a href="/login">Login</a>
+@inject IJSRuntime JsRuntime
+
+@code{
+    private bool isVisible = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        var token = await JsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
+
+
+        if (string.IsNullOrEmpty(token))
+        {
+            isVisible = false;
+        }
+        else
+        {
+            isVisible = true;
+        }
+    }
+}
+@if (!isVisible)
+{
+    <a href="/login">Login</a>
+}
+else
+{
+   <LogoutButton/>
+}
+
 <ShipmentTable/>
 
-<td><a href="/addShipment">Add shipment</a></td>
+@if (isVisible)
+{
+    
+    <a href="/addShipment">Add shipment</a>
+}
+
 

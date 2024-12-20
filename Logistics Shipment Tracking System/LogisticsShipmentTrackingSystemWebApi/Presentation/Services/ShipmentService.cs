@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 using Microsoft.JSInterop;
@@ -55,6 +56,12 @@ namespace Presentation.Services
 
         public async Task<Shipment> CreateShipmentAsync(ShipmentRequest request)
         {
+            var tokenJson =  await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
+            var tokenObject = JsonSerializer.Deserialize<Dictionary<string, string>>(tokenJson);
+            var token = tokenObject?["token"];
+
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClient.PostAsJsonAsync("http://localhost:5242/api/Shipment/create", request);
 
             if (response.IsSuccessStatusCode)
@@ -69,6 +76,11 @@ namespace Presentation.Services
 
         public async Task UpdateShipmentAsync(ShipmentRequest request)
         {
+            var tokenJson = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
+            var tokenObject = JsonSerializer.Deserialize<Dictionary<string, string>>(tokenJson);
+            var token = tokenObject?["token"];
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClient.PutAsJsonAsync($"http://localhost:5242/api/Shipment/update", request);
 
             if (!response.IsSuccessStatusCode)
@@ -79,6 +91,11 @@ namespace Presentation.Services
 
         public async Task Delete(Guid id)
         {
+            var tokenJson = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
+            var tokenObject = JsonSerializer.Deserialize<Dictionary<string, string>>(tokenJson);
+            var token = tokenObject?["token"];
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClient.DeleteAsync($"http://localhost:5242/api/Shipment/{id}");
 
             if (!response.IsSuccessStatusCode)

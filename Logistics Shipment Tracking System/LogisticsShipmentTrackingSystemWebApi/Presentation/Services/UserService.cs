@@ -1,4 +1,6 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using System.Net.Http.Json;
 
 
@@ -26,12 +28,25 @@ public class UserService
         {
             var token = await response.Content.ReadAsStringAsync();
 
-         
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "token", token);
+
+            //await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "token", token);
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "token", token);
 
             return true;
         }
 
         return false;
+    }
+
+    public async Task LogoutAsync()
+    {
+        try
+        {
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", "token");
+        }
+        catch(Exception ex) 
+        {
+            throw new Exception(ex.ToString());
+        }
     }
 }

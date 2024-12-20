@@ -1,0 +1,26 @@
+﻿@using Presentation.Services
+
+
+<button @onclick="() => Logout()">Logout</button>
+
+
+@code {
+
+    [Inject]
+    private UserService UserService { get; set; }
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async Task Logout()
+    {
+        try
+        {
+            await UserService.LogoutAsync();
+            NavigationManager.NavigateTo(NavigationManager.Uri, true);
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(ex.ToString());
+        }
+    }
+}

@@ -94,9 +94,10 @@ app.MapControllers();
 
 app.UseCors(config =>
 {
+    config.WithOrigins("https://localhost:7006");
     config.AllowAnyHeader();
     config.AllowAnyMethod();
-    config.AllowAnyOrigin();
+    config.AllowCredentials();
 });
 
 app.UseSerilogRequestLogging();

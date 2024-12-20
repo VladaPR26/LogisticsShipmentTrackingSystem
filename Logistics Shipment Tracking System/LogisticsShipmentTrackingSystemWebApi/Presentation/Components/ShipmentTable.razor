@@ -5,6 +5,9 @@
 
 <h3>Lista Pošiljki</h3>
 
+
+
+
 @if (loading)
 {
     <p>Učitavanje pošiljki...</p>
@@ -34,10 +37,16 @@ else
                     <td>@shipment.DeliveryDate.ToString("dd.MM.yyyy")</td>
                     <td>
                         <!-- Dodato dugme za update koje čuva ID u localStorage i preusmerava korisnika -->
-                        <button @onclick="() => SaveIdAndNavigate(shipment.Id)">Update</button>
+                        @if (isVisible)
+                        {
+                            <button @onclick="() => SaveIdAndNavigate(shipment.Id)">Update</button>
+                        }
                     </td>
                     <td>
-                        <button @onclick="() => Delete(shipment.Id)">Delete</button>
+                        @if (isVisible)
+                        {
+                            <button @onclick="() => Delete(shipment.Id)">Delete</button>
+                        }
                     </td>
                 </tr>
             }
@@ -45,16 +54,36 @@ else
     </table>
 }
 
+
+
 @code {
     private List<Shipment> shipments = new();
     private bool loading = true;
     private string? error;
-
+    private bool isVisible = true;
     [Inject]
     private ShipmentService ShipmentService { get; set; }
+    [Inject]
+    private IJSRuntime JSRuntime{get; set;}
+
 
     protected override async Task OnInitializedAsync()
     {
+       
+
+        var token = await JsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
+        //var token = await JSRuntime.InvokeAsync<string>("getSessionStorageItem", "token");
+
+
+        if (string.IsNullOrEmpty(token))
+        {
+            isVisible = false;
+        }
+        else
+        {
+            isVisible = true;
+        }
+
         try
         {
             shipments = await ShipmentService.GetAll();
@@ -67,6 +96,8 @@ else
         {
             loading = false;
         }
+
+
     }
 
     private async Task Delete(Guid shipmentId)

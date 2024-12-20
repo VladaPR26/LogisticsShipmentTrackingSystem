@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Http;
 
 using Presentation;
 using Presentation.Services;
@@ -12,5 +13,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ShipmentService>();
+
+
+
 
 await builder.Build().RunAsync();

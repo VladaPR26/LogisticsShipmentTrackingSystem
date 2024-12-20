@@ -34,7 +34,7 @@ public class ShipmentController : ControllerBase
     }
 
     [HttpPost("create")]
-    //[Authorize]
+    [Authorize]
     public ActionResult CreateShipment(ShipmentRequest request)
     {
         //validacija
@@ -43,7 +43,7 @@ public class ShipmentController : ControllerBase
     }
 
     [HttpPut("update")]
-    //[Authorize]
+    [Authorize]
     public ActionResult UpdateShipment(ShipmentRequest request)
     {
         //validacija
@@ -53,7 +53,7 @@ public class ShipmentController : ControllerBase
 
 
     [HttpDelete("{id:Guid}")]
-    //[Authorize]
+    [Authorize]
     public ActionResult Delete(Guid id) 
     {
         _shipmentService.Delete(id);
