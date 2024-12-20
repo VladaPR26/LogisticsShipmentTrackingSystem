@@ -2,11 +2,11 @@
 @using Presentation.Services
 @inject IJSRuntime JsRuntime
 @inject NavigationManager Navigation
+@inject ShipmentService ShipmentService
 
 <h3>Lista Pošiljki</h3>
 
-
-
+<FilterShipment OnFiltered="UpdateFilteredShipments" />
 
 @if (loading)
 {
@@ -36,7 +36,6 @@ else
                     <td>@shipment.CreatingDate.ToString("dd.MM.yyyy")</td>
                     <td>@shipment.DeliveryDate.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <!-- Dodato dugme za update koje čuva ID u localStorage i preusmerava korisnika -->
                         @if (isVisible)
                         {
                             <button @onclick="() => SaveIdAndNavigate(shipment.Id)">Update</button>
@@ -54,26 +53,20 @@ else
     </table>
 }
 
-
-
 @code {
     private List<Shipment> shipments = new();
     private bool loading = true;
     private string? error;
     private bool isVisible = true;
-    [Inject]
-    private ShipmentService ShipmentService { get; set; }
-    [Inject]
-    private IJSRuntime JSRuntime{get; set;}
-
 
     protected override async Task OnInitializedAsync()
     {
-       
+        await LoadShipments();
+    }
 
+    private async Task LoadShipments()
+    {
         var token = await JsRuntime.InvokeAsync<string>("sessionStorage.getItem", "token");
-        //var token = await JSRuntime.InvokeAsync<string>("getSessionStorageItem", "token");
-
 
         if (string.IsNullOrEmpty(token))
         {
@@ -96,8 +89,12 @@ else
         {
             loading = false;
         }
+    }
 
-
+    private void UpdateFilteredShipments(List<Shipment> filteredShipments)
+    {
+        shipments = filteredShipments; // Ažuriraj listu sa filtriranim pošiljkama
+        StateHasChanged(); // Ažuriraj prikaz
     }
 
     private async Task Delete(Guid shipmentId)
@@ -111,17 +108,11 @@ else
         {
             error = $"Došlo je do greške: {ex.Message}";
         }
-
     }
 
-
-    // Funkcija koja čuva ID pošiljke u localStorage i preusmerava korisnika na stranicu za update
     private async Task SaveIdAndNavigate(Guid shipmentId)
     {
-        // Čuvanje ID-a pošiljke u localStorage
         await JsRuntime.InvokeVoidAsync("localStorage.setItem", "shipmentId", shipmentId.ToString());
-
-        // Navigacija na stranicu za update
         Navigation.NavigateTo("/addShipment");
     }
 }

@@ -1,0 +1,43 @@
+﻿@using Presentation.Services
+@inject ShipmentService ShipmentService
+@using Presentation.Models.Entities
+
+
+<div>
+    <label for="name">Shipment name:</label>
+    <input id="name" @bind="name" type="text" placeholder="Shipment name" />
+</div>
+
+<div>
+    <label for="deliveryState">Delivery state:</label>
+    <select id="deliveryState" @bind="deliveryState">
+        <option value="">Empty</option>
+        <option value="OnTheWay">OnTheWay</option>
+        <option value="Delivered">Delivered</option>
+        <option value="InWarehouse">InWarehouse</option>
+    </select>
+</div>
+
+<button @onclick="FilterShipments">Filtriraj</button>
+
+@code {
+    private string name = string.Empty;
+    private string? deliveryState = string.Empty;
+
+    [Parameter]
+    public EventCallback<List<Shipment>> OnFiltered { get; set; }
+    
+
+    private async Task FilterShipments()
+    {
+        try
+        {
+            var filteredShipments = await ShipmentService.Filter(name, deliveryState);
+            await OnFiltered.InvokeAsync(filteredShipments);  
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to filter shipments: {ex.Message}");
+        }
+    }
+}
