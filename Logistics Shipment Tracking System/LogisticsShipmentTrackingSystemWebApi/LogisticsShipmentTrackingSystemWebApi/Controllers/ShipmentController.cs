@@ -33,29 +33,32 @@ public class ShipmentController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost]
-    [Authorize]
+    [HttpPost("create")]
+    //[Authorize]
     public ActionResult CreateShipment(ShipmentRequest request)
     {
         //validacija
-        Shipment shipment=_shipmentService.CreateShipment(request);
-        return CreatedAtAction(nameof(CreateShipment),shipment);
+        Shipment shipment = _shipmentService.CreateShipment(request);
+        return CreatedAtAction(nameof(CreateShipment), shipment);
     }
 
-    [HttpDelete]
-    [Authorize]
+    [HttpPut("update")]
+    //[Authorize]
+    public ActionResult UpdateShipment(ShipmentRequest request)
+    {
+        //validacija
+        _shipmentService.UpdateShipment(request);
+        return NoContent();
+    }
+
+
+    [HttpDelete("{id:Guid}")]
+    //[Authorize]
     public ActionResult Delete(Guid id) 
     {
         _shipmentService.Delete(id);
         return NoContent();
     }
 
-    [HttpPut]
-    [Authorize]
-    public ActionResult UpdateShipment(ShipmentUpdateRequest request)
-    {
-        //validacija
-        _shipmentService.UpdateShipment(request);
-        return NoContent();
-    }
+    
 }

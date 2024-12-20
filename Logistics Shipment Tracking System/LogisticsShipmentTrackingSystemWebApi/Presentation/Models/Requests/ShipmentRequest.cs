@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Presentation.Models.Enums;
 
-using Domain.Models.Enums;
+namespace Presentation.Models.Requests;
 
-namespace Application.Services.Shipments.Requests;
 public class ShipmentRequest
 {
     public Guid Id { get; set; }

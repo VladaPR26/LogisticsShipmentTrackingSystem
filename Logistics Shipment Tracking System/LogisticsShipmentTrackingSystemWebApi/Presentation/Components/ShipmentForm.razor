@@ -1,0 +1,130 @@
+﻿@using Microsoft.JSInterop
+@using Presentation.Models.Entities
+@using Presentation.Models.Requests
+@using Presentation.Services
+
+<EditForm Model="@shipmentRequest" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="shipmentRequest.Name" />
+    </div>
+
+    <div>
+        <label for="deliveryState">Delivery State:</label>
+        <InputSelect id="deliveryState" @bind-Value="shipmentRequest.DeliveryState">
+            <option value="OnTheWay">OnTheWay</option>
+            <option value="Delivered">Delivered</option>
+            <option value="InWarehouse">InWarehouse</option>
+        </InputSelect>
+    </div>
+
+    <div>
+        <label for="deliveryDate">Delivery Date:</label>
+        <InputDate id="deliveryDate" @bind-Value="shipmentRequest.DeliveryDate" />
+    </div>
+
+    <button type="submit">
+        @if (shipmentRequest.Id == Guid.Empty)
+        {
+            <span>Create Shipment</span>
+        }
+        else
+        {
+            <span>Update Shipment</span>
+        }
+    </button>
+</EditForm>
+
+@if (shipment != null)
+{
+    <div>
+        <h5>Shipment Saved Successfully</h5>
+        <p>Name: @shipment.Name</p>
+        <p>Delivery State: @shipment.DeliveryState</p>
+        <p>Delivery Date: @shipment.DeliveryDate.ToShortDateString()</p>
+    </div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger mt-3">
+        <p>@errorMessage</p>
+    </div>
+}
+
+@code {
+    [Inject]
+    private ShipmentService ShipmentService { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; }
+
+    private ShipmentRequest shipmentRequest = new ShipmentRequest();
+    private Shipment? shipment;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Provera da li postoji ID pošiljke u localStorage
+        var shipmentId = await JsRuntime.InvokeAsync<string>("localStorage.getItem", "shipmentId");
+
+        if (!string.IsNullOrEmpty(shipmentId))
+        {
+            await LoadShipmentData(Guid.Parse(shipmentId));
+        }
+    }
+
+    private async Task LoadShipmentData(Guid shipmentId)
+    {
+        try
+        {
+            var shipment = await ShipmentService.GetShipmentByIdAsync(shipmentId);
+            if (shipment != null)
+            {
+                shipmentRequest = new ShipmentRequest
+                    {
+                        Id = shipment.Id,
+                        Name = shipment.Name,
+                        DeliveryState = shipment.DeliveryState,
+                        DeliveryDate = shipment.DeliveryDate
+                    };
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            if (shipmentRequest.Id == Guid.Empty)
+            {
+                shipment = await ShipmentService.CreateShipmentAsync(shipmentRequest);
+            }
+            else
+            {
+                await ShipmentService.UpdateShipmentAsync(shipmentRequest);
+                NavigationManager.NavigateTo("/");
+            }
+
+            errorMessage = null;
+
+            // Brisanje ID-a iz localStorage nakon uspešnog ažuriranja
+            await JsRuntime.InvokeVoidAsync("localStorage.removeItem", "shipmentId");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            shipment = null;
+        }
+    }
+}

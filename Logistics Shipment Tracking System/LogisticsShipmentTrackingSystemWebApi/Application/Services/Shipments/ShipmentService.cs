@@ -53,7 +53,7 @@ public class ShipmentService:IShipmentService
     }
 
 
-    public void UpdateShipment(ShipmentUpdateRequest request)
+    public void UpdateShipment(ShipmentRequest request)
     {
         try
         {

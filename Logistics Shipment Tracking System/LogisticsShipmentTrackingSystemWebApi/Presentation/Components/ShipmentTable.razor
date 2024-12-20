@@ -1,0 +1,96 @@
+﻿@using Presentation.Models.Entities
+@using Presentation.Services
+@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigation
+
+<h3>Lista Pošiljki</h3>
+
+@if (loading)
+{
+    <p>Učitavanje pošiljki...</p>
+}
+else if (!string.IsNullOrEmpty(error))
+{
+    <p class="error">@error</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Status Dostave</th>
+                <th>Datum Kreiranja</th>
+                <th>Datum Dostave</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var shipment in shipments)
+            {
+                <tr>
+                    <td>@shipment.Name</td>
+                    <td>@shipment.DeliveryState</td>
+                    <td>@shipment.CreatingDate.ToString("dd.MM.yyyy")</td>
+                    <td>@shipment.DeliveryDate.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        <!-- Dodato dugme za update koje čuva ID u localStorage i preusmerava korisnika -->
+                        <button @onclick="() => SaveIdAndNavigate(shipment.Id)">Update</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => Delete(shipment.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Shipment> shipments = new();
+    private bool loading = true;
+    private string? error;
+
+    [Inject]
+    private ShipmentService ShipmentService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            shipments = await ShipmentService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            error = $"Došlo je do greške: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task Delete(Guid shipmentId)
+    {
+        try
+        {
+            await ShipmentService.Delete(shipmentId);
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        }
+        catch(Exception ex)
+        {
+            error = $"Došlo je do greške: {ex.Message}";
+        }
+
+    }
+
+
+    // Funkcija koja čuva ID pošiljke u localStorage i preusmerava korisnika na stranicu za update
+    private async Task SaveIdAndNavigate(Guid shipmentId)
+    {
+        // Čuvanje ID-a pošiljke u localStorage
+        await JsRuntime.InvokeVoidAsync("localStorage.setItem", "shipmentId", shipmentId.ToString());
+
+        // Navigacija na stranicu za update
+        Navigation.NavigateTo("/addShipment");
+    }
+}

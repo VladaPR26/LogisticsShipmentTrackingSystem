@@ -15,6 +15,6 @@ public interface IShipmentService
     ShipmentResponse GetAll();
     Shipment Get(Guid id);
     Shipment CreateShipment(ShipmentRequest request);
-    void UpdateShipment(ShipmentUpdateRequest request);
+    void UpdateShipment(ShipmentRequest request);
     void Delete(Guid id);
 }
